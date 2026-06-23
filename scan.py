@@ -76,8 +76,12 @@ UNIVERSE = [
 ]
 
 
-def analyze(ticker: str, df: pd.DataFrame) -> dict | None:
-    """Run VCP analysis on a single stock's OHLCV dataframe."""
+def analyze(ticker: str, df: pd.DataFrame, true_rs: int | None = None) -> dict | None:
+    """Run VCP analysis on a single stock's OHLCV dataframe.
+
+    true_rs: market-relative RS percentile (1-99) computed across the whole
+    universe in pass 1. If None, falls back to the internal return proxy.
+    """
     if df is None or len(df) < 150:
         return None
 
@@ -152,10 +156,32 @@ def analyze(ticker: str, df: pd.DataFrame) -> dict | None:
     prior_vol = vol[-45:-15].mean() if n >= 45 else vol[:-15].mean()
     vol_ratio = recent_vol / prior_vol if prior_vol else 1.0
 
-    # ── Relative strength proxy ──────────────────────────────────────────────
+    # ── Relative strength ────────────────────────────────────────────────────
+    # Prefer the true market-relative percentile from pass 1; fall back to a
+    # return-based proxy only if it wasn't supplied.
     ret6m = (price / close[-126] - 1) * 100 if n >= 126 else 0
     ret3m = (price / close[-63] - 1) * 100 if n >= 63 else 0
-    rs = int(min(99, max(0, round(50 + ret6m * 1.0 + ret3m * 0.5))))
+    if true_rs is not None:
+        rs = int(true_rs)
+    else:
+        rs = int(min(99, max(0, round(50 + ret6m * 1.0 + ret3m * 0.5))))
+
+    # ── Base depth & length ──────────────────────────────────────────────────
+    # Find the most recent significant swing high, then measure how long the
+    # stock has been basing since (weeks) and how deep the pullback ran
+    # (peak-to-lowest-low, as a %). A real VCP base is several weeks long with
+    # a controlled depth; a 1-2 week dip after a vertical run is not a base.
+    lookback = min(60, n)  # ~3 months of daily bars
+    seg_high_idx = int(np.argmax(high[-lookback:]))
+    bars_since_high = (lookback - 1) - seg_high_idx
+    base_weeks = round(bars_since_high / 5.0, 1)
+    base_peak = high[-lookback:][seg_high_idx]
+    base_trough = low[-(lookback - seg_high_idx):].min() if seg_high_idx < lookback else low[-1]
+    base_depth = (base_peak - base_trough) / base_peak * 100 if base_peak else 0
+
+    # A valid base: at least ~3 weeks long, depth not deeper than ~35%,
+    # and not a runaway shallow blip (depth at least ~5% so it's a real pause)
+    base_ok = (base_weeks >= 3.0) and (5.0 <= base_depth <= 35.0)
 
     # Proper MA stacking: 50 > 150 > 200, all in correct Stage-2 order
     ma_stacked = bool(
@@ -173,11 +199,11 @@ def analyze(ticker: str, df: pd.DataFrame) -> dict | None:
     checks = {
         "MA Stack 50>150>200": ma_stacked,
         "Not Extended (<12% > 50d)": bool(not_extended),
-        "200d Rising": bool(ma200_rising),
         "Within 15% of High": bool(price >= high52 * 0.85),
-        "RS > 75": bool(rs >= 75),
+        "RS > 80": bool(rs >= 80),
         "VCP (3+ tightenings)": bool(contractions >= 3),
         "Base Is Tight (<10%)": bool(latest_wk_range < 0.10),
+        "Valid Base (3wk+, 5-35%)": bool(base_ok),
         "Volume Dry-Up": bool(vol_ratio < 0.80),
     }
     pass_count = sum(checks.values())
@@ -191,6 +217,8 @@ def analyze(ticker: str, df: pd.DataFrame) -> dict | None:
         and checks["Within 15% of High"]    # genuinely near highs (kills recoveries)
         and contractions >= 3               # real multi-stage contraction
         and latest_wk_range < 0.10          # base is actually tight now
+        and base_ok                         # base has real length & controlled depth
+        and rs >= 80                        # true market-relative strength
     )
     if not core or vcp_score < 75:
         return None
@@ -214,15 +242,15 @@ def analyze(ticker: str, df: pd.DataFrame) -> dict | None:
         "passCount": pass_count,
         "checks": checks,
         "ranges": [round(w * 100, 1) if w else None for w in windows],
+        "baseWeeks": base_weeks,
+        "baseDepth": round(float(base_depth), 1),
+        "ret6m": round(float(ret6m), 1),
     }
 
 
-def main():
-    print(f"VCP scan starting — {len(UNIVERSE)} tickers", flush=True)
-    results = []
-    failed = 0
-
-    # yfinance can batch-download; chunk to be gentle and resilient
+def download_all() -> dict:
+    """Pass 1a: download daily data for the whole universe, chunked."""
+    frames = {}
     CHUNK = 40
     for i in range(0, len(UNIVERSE), CHUNK):
         chunk = UNIVERSE[i : i + CHUNK]
@@ -238,36 +266,86 @@ def main():
             )
         except Exception as e:
             print(f"  chunk {i} download error: {e}", flush=True)
-            failed += len(chunk)
             continue
 
         for ticker in chunk:
             try:
-                if len(chunk) == 1:
-                    df = data
-                else:
-                    df = data[ticker]
+                df = data if len(chunk) == 1 else data[ticker]
                 df = df.dropna()
-                if df.empty:
-                    failed += 1
-                    continue
-                r = analyze(ticker, df)
-                if r:
-                    results.append(r)
+                if not df.empty and len(df) >= 150:
+                    frames[ticker] = df
             except Exception:
-                failed += 1
                 continue
 
-        print(f"  processed {min(i+CHUNK, len(UNIVERSE))}/{len(UNIVERSE)} · {len(results)} hits", flush=True)
+        print(f"  downloaded {min(i+CHUNK, len(UNIVERSE))}/{len(UNIVERSE)} · {len(frames)} usable", flush=True)
         time.sleep(1)
+    return frames
 
-    results.sort(key=lambda x: x["vcpScore"], reverse=True)
+
+def compute_rs_ranks(frames: dict) -> dict:
+    """Pass 1b: compute each stock's true RS percentile (1-99).
+
+    Uses a Minervini-style weighted performance score (more weight on recent
+    quarters) and ranks every stock against the whole universe, so RS is
+    genuinely market-relative rather than an absolute return.
+    """
+    perf = {}
+    for ticker, df in frames.items():
+        close = df["Close"].to_numpy(dtype=float)
+        n = len(close)
+        if n < 126:
+            continue
+        # Weighted: 40% last quarter, then 20/20/20 for the prior three
+        c0 = close[-1]
+        q1 = close[-63] if n >= 63 else close[0]
+        q2 = close[-126] if n >= 126 else close[0]
+        q3 = close[-189] if n >= 189 else close[0]
+        q4 = close[-252] if n >= 252 else close[0]
+        score = (
+            0.40 * (c0 / q1 - 1)
+            + 0.20 * (c0 / q2 - 1)
+            + 0.20 * (c0 / q3 - 1)
+            + 0.20 * (c0 / q4 - 1)
+        )
+        perf[ticker] = score
+
+    # Rank into 1-99 percentiles
+    ranked = sorted(perf.items(), key=lambda kv: kv[1])
+    total = len(ranked)
+    rs_map = {}
+    for idx, (ticker, _) in enumerate(ranked):
+        pct = round((idx + 1) / total * 99) if total > 1 else 50
+        rs_map[ticker] = max(1, min(99, pct))
+    return rs_map
+
+
+def main():
+    print(f"VCP scan starting — {len(UNIVERSE)} tickers", flush=True)
+
+    # ── Pass 1: download everything, compute true market-relative RS ─────────
+    print("Pass 1: downloading universe…", flush=True)
+    frames = download_all()
+    print(f"Pass 1: computing RS ranks for {len(frames)} stocks…", flush=True)
+    rs_map = compute_rs_ranks(frames)
+
+    # ── Pass 2: run strict VCP analysis using true RS ───────────────────────
+    print("Pass 2: analyzing for VCP setups…", flush=True)
+    results = []
+    for ticker, df in frames.items():
+        try:
+            r = analyze(ticker, df, true_rs=rs_map.get(ticker))
+            if r:
+                results.append(r)
+        except Exception:
+            continue
+
+    results.sort(key=lambda x: (x["vcpScore"], x["rs"]), reverse=True)
 
     output = {
         "generatedAt": datetime.now(timezone.utc).isoformat(),
         "universeSize": len(UNIVERSE),
-        "scanned": len(UNIVERSE) - failed,
-        "failed": failed,
+        "scanned": len(frames),
+        "failed": len(UNIVERSE) - len(frames),
         "hitCount": len(results),
         "results": results,
     }
