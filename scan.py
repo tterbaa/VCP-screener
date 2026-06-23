@@ -105,26 +105,36 @@ def analyze(ticker: str, df: pd.DataFrame) -> dict | None:
     high52 = close[-win:].max()
     low52 = close[-win:].min()
 
-    # ── Volatility contraction: rolling 10-day range windows ──────────────
-    def range_window(end_idx, length=10):
-        s = max(0, end_idx - length)
-        if end_idx - s < 6:
-            return None
-        hi = high[s:end_idx].max()
-        lo = low[s:end_idx].min()
-        return (hi - lo) / hi if hi else None
+    # ── Volatility contraction: TRUE WEEKLY candles ───────────────────────
+    # Resample daily OHLC into weekly bars (week ending Friday), then measure
+    # the high-low range of each of the last several weeks. A valid VCP shows
+    # successively tighter weekly ranges (each contraction smaller than the
+    # prior) — this is the classic weekly view Minervini teaches.
+    weekly = df.resample("W-FRI").agg(
+        {"High": "max", "Low": "min", "Close": "last"}
+    ).dropna()
 
-    windows = [
-        range_window(n),
-        range_window(n - 10),
-        range_window(n - 20),
-        range_window(n - 35),
-    ]
-    valid = [w for w in windows if w is not None]
+    wk_high = weekly["High"].to_numpy(dtype=float)
+    wk_low = weekly["Low"].to_numpy(dtype=float)
+    wk_range = np.where(wk_high > 0, (wk_high - wk_low) / wk_high, np.nan)
+
+    # Most recent 6 completed weeks, oldest -> newest
+    recent_weeks = wk_range[-6:]
+    recent_weeks = recent_weeks[~np.isnan(recent_weeks)]
+
+    # Count contractions: each week tighter than the one before it
     contractions = 0
-    for i in range(len(valid) - 1):
-        if valid[i] < valid[i + 1] * 0.90:
+    for i in range(1, len(recent_weeks)):
+        if recent_weeks[i] < recent_weeks[i - 1] * 0.90:
             contractions += 1
+
+    # Last 4 weekly ranges for the chart, newest -> oldest
+    windows = [round(float(r), 4) for r in recent_weeks[-4:][::-1]]
+    while len(windows) < 4:
+        windows.append(None)
+
+    # Most recent completed week's range (absolute tightness of the base)
+    latest_wk_range = float(recent_weeks[-1]) if len(recent_weeks) else 1.0
 
     # ── Volume dry-up ──────────────────────────────────────────────────────
     recent_vol = vol[-15:].mean()
@@ -136,22 +146,34 @@ def analyze(ticker: str, df: pd.DataFrame) -> dict | None:
     ret3m = (price / close[-63] - 1) * 100 if n >= 63 else 0
     rs = int(min(99, max(0, round(50 + ret6m * 1.0 + ret3m * 0.5))))
 
+    # Proper MA stacking: 50 > 150 > 200, all in correct Stage-2 order
+    ma_stacked = bool(
+        sma50 is not None
+        and sma50 > sma150 > sma200
+    )
+
     checks = {
-        "Above 150d MA": bool(price > sma150),
-        "Above 200d MA": bool(price > sma200),
+        "MA Stack 50>150>200": ma_stacked,
+        "Above 50d MA": bool(price > sma50) if sma50 else False,
         "200d Rising": bool(ma200_rising),
-        "Within 25% of High": bool(price >= high52 * 0.75),
-        "30% Above Low": bool(price > low52 * 1.30),
-        "RS > 70": bool(rs >= 70),
-        "VCP Pattern": bool(contractions >= 2),
+        "Within 15% of High": bool(price >= high52 * 0.85),
+        "RS > 75": bool(rs >= 75),
+        "VCP (3+ tightenings)": bool(contractions >= 3),
+        "Base Is Tight (<10%)": bool(latest_wk_range < 0.10),
         "Volume Dry-Up": bool(vol_ratio < 0.80),
     }
     pass_count = sum(checks.values())
     vcp_score = round(pass_count / len(checks) * 100)
 
-    # Require the core structure
-    core = checks["Above 150d MA"] and checks["Above 200d MA"] and checks["VCP Pattern"]
-    if not core or vcp_score < 50:
+    # Strict core gate — ALL of these must hold, no exceptions:
+    core = (
+        ma_stacked                          # established Stage 2 uptrend
+        and price > sma50                   # holding above the 50d
+        and checks["Within 15% of High"]    # genuinely near highs (kills recoveries)
+        and contractions >= 3               # real multi-stage contraction
+        and latest_wk_range < 0.10          # base is actually tight now
+    )
+    if not core or vcp_score < 75:
         return None
 
     change_pct = (close[-1] / close[-2] - 1) * 100 if n >= 2 else 0
