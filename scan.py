@@ -114,6 +114,17 @@ def analyze(ticker: str, df: pd.DataFrame) -> dict | None:
         {"High": "max", "Low": "min", "Close": "last"}
     ).dropna()
 
+    # Drop the current in-progress week. The latest resampled bar usually
+    # represents an incomplete week (only a few sessions), whose artificially
+    # small range would otherwise pass the tightness check and mask a big
+    # prior-week breakout move. Judge structure on completed weeks only.
+    today = df.index[-1]
+    last_week_end = weekly.index[-1]
+    # If the final weekly bar's Friday is on/after the last daily bar's date,
+    # that week hasn't closed yet — drop it.
+    if last_week_end.normalize() >= today.normalize():
+        weekly = weekly.iloc[:-1]
+
     wk_high = weekly["High"].to_numpy(dtype=float)
     wk_low = weekly["Low"].to_numpy(dtype=float)
     wk_range = np.where(wk_high > 0, (wk_high - wk_low) / wk_high, np.nan)
@@ -152,9 +163,16 @@ def analyze(ticker: str, df: pd.DataFrame) -> dict | None:
         and sma50 > sma150 > sma200
     )
 
+    # Extension guard: a proper VCP buy point sits in a tight base, NOT far
+    # above the 50d MA. If price is stretched well above the 50d, the breakout
+    # has likely already happened and the stock is extended (e.g. a vertical
+    # spike on huge volume). Reject anything more than 12% above its 50d.
+    pct_above_50 = (price / sma50 - 1) * 100 if sma50 else 0
+    not_extended = pct_above_50 <= 12.0
+
     checks = {
         "MA Stack 50>150>200": ma_stacked,
-        "Above 50d MA": bool(price > sma50) if sma50 else False,
+        "Not Extended (<12% > 50d)": bool(not_extended),
         "200d Rising": bool(ma200_rising),
         "Within 15% of High": bool(price >= high52 * 0.85),
         "RS > 75": bool(rs >= 75),
@@ -169,6 +187,7 @@ def analyze(ticker: str, df: pd.DataFrame) -> dict | None:
     core = (
         ma_stacked                          # established Stage 2 uptrend
         and price > sma50                   # holding above the 50d
+        and not_extended                    # not already broken out / spiked
         and checks["Within 15% of High"]    # genuinely near highs (kills recoveries)
         and contractions >= 3               # real multi-stage contraction
         and latest_wk_range < 0.10          # base is actually tight now
