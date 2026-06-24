@@ -1,140 +1,16 @@
 {
-  "generatedAt": "2026-06-23T23:43:24.098526+00:00",
+  "generatedAt": "2026-06-24T00:45:43.819317+00:00",
   "universeSize": 526,
-  "scanned": 469,
-  "failed": 57,
-  "hitCount": 29,
+  "scanned": 467,
+  "failed": 59,
+  "hitCount": 3,
   "results": [
-    {
-      "ticker": "ATKR",
-      "price": 77.82,
-      "changePct": -5.04,
-      "vcpScore": 100,
-      "rs": 87,
-      "contractions": 3,
-      "volRatio": 0.72,
-      "pivot": 85.36,
-      "distFromHigh": 8.9,
-      "sma50": 76.51,
-      "sma150": 68.33,
-      "sma200": 67.05,
-      "passCount": 8,
-      "checks": {
-        "MA Stack 50>150>200": true,
-        "Not Extended (<12% > 50d)": true,
-        "200d Rising": true,
-        "Within 15% of High": true,
-        "RS > 75": true,
-        "VCP (3+ tightenings)": true,
-        "Base Is Tight (<10%)": true,
-        "Volume Dry-Up": true
-      },
-      "ranges": [
-        6.3,
-        8.4,
-        6.5,
-        10.6
-      ]
-    },
-    {
-      "ticker": "CPRX",
-      "price": 31.4,
-      "changePct": 0.06,
-      "vcpScore": 100,
-      "rs": 99,
-      "contractions": 3,
-      "volRatio": 0.57,
-      "pivot": 31.4,
-      "distFromHigh": 0.0,
-      "sma50": 29.95,
-      "sma150": 25.83,
-      "sma200": 24.55,
-      "passCount": 8,
-      "checks": {
-        "MA Stack 50>150>200": true,
-        "Not Extended (<12% > 50d)": true,
-        "200d Rising": true,
-        "Within 15% of High": true,
-        "RS > 75": true,
-        "VCP (3+ tightenings)": true,
-        "Base Is Tight (<10%)": true,
-        "Volume Dry-Up": true
-      },
-      "ranges": [
-        0.2,
-        0.4,
-        0.2,
-        0.4
-      ]
-    },
-    {
-      "ticker": "LSCC",
-      "price": 144.6,
-      "changePct": -6.87,
-      "vcpScore": 100,
-      "rs": 99,
-      "contractions": 3,
-      "volRatio": 0.75,
-      "pivot": 157.01,
-      "distFromHigh": 6.9,
-      "sma50": 131.42,
-      "sma150": 100.43,
-      "sma200": 92.73,
-      "passCount": 8,
-      "checks": {
-        "MA Stack 50>150>200": true,
-        "Not Extended (<12% > 50d)": true,
-        "200d Rising": true,
-        "Within 15% of High": true,
-        "RS > 75": true,
-        "VCP (3+ tightenings)": true,
-        "Base Is Tight (<10%)": true,
-        "Volume Dry-Up": true
-      },
-      "ranges": [
-        9.8,
-        12.1,
-        14.5,
-        5.5
-      ]
-    },
-    {
-      "ticker": "SCHL",
-      "price": 42.47,
-      "changePct": -0.14,
-      "vcpScore": 100,
-      "rs": 99,
-      "contractions": 3,
-      "volRatio": 0.72,
-      "pivot": 44.54,
-      "distFromHigh": 3.5,
-      "sma50": 40.88,
-      "sma150": 35.48,
-      "sma200": 33.46,
-      "passCount": 8,
-      "checks": {
-        "MA Stack 50>150>200": true,
-        "Not Extended (<12% > 50d)": true,
-        "200d Rising": true,
-        "Within 15% of High": true,
-        "RS > 75": true,
-        "VCP (3+ tightenings)": true,
-        "Base Is Tight (<10%)": true,
-        "Volume Dry-Up": true
-      },
-      "ranges": [
-        6.5,
-        5.6,
-        8.4,
-        4.7
-      ]
-    },
     {
       "ticker": "WTTR",
       "price": 18.55,
       "changePct": 0.38,
       "vcpScore": 100,
-      "rs": 99,
+      "rs": 92,
       "contractions": 3,
       "volRatio": 0.69,
       "pivot": 19.39,
@@ -146,11 +22,11 @@
       "checks": {
         "MA Stack 50>150>200": true,
         "Not Extended (<12% > 50d)": true,
-        "200d Rising": true,
         "Within 15% of High": true,
-        "RS > 75": true,
+        "RS > 80": true,
         "VCP (3+ tightenings)": true,
         "Base Is Tight (<10%)": true,
+        "Valid Base (3wk+, 5-35%)": true,
         "Volume Dry-Up": true
       },
       "ranges": [
@@ -158,200 +34,51 @@
         6.3,
         7.9,
         9.5
-      ]
+      ],
+      "baseWeeks": 4.4,
+      "baseDepth": 15.4,
+      "ret6m": 78.4
     },
     {
-      "ticker": "ASB",
-      "price": 29.88,
-      "changePct": 1.7,
-      "vcpScore": 88,
-      "rs": 75,
+      "ticker": "CPRX",
+      "price": 31.4,
+      "changePct": 0.06,
+      "vcpScore": 100,
+      "rs": 82,
       "contractions": 3,
-      "volRatio": 1.17,
-      "pivot": 29.96,
+      "volRatio": 0.57,
+      "pivot": 31.4,
       "distFromHigh": 0.0,
-      "sma50": 27.96,
-      "sma150": 26.65,
-      "sma200": 26.23,
-      "passCount": 7,
+      "sma50": 29.95,
+      "sma150": 25.83,
+      "sma200": 24.55,
+      "passCount": 8,
       "checks": {
         "MA Stack 50>150>200": true,
         "Not Extended (<12% > 50d)": true,
-        "200d Rising": true,
         "Within 15% of High": true,
-        "RS > 75": true,
+        "RS > 80": true,
         "VCP (3+ tightenings)": true,
         "Base Is Tight (<10%)": true,
-        "Volume Dry-Up": false
+        "Valid Base (3wk+, 5-35%)": true,
+        "Volume Dry-Up": true
       },
       "ranges": [
-        4.2,
-        6.6,
-        3.8,
-        3.3
-      ]
-    },
-    {
-      "ticker": "AVNS",
-      "price": 24.93,
-      "changePct": 0.12,
-      "vcpScore": 88,
-      "rs": 99,
-      "contractions": 3,
-      "volRatio": 0.93,
-      "pivot": 25.12,
-      "distFromHigh": 0.5,
-      "sma50": 24.58,
-      "sma150": 16.78,
-      "sma200": 15.49,
-      "passCount": 7,
-      "checks": {
-        "MA Stack 50>150>200": true,
-        "Not Extended (<12% > 50d)": true,
-        "200d Rising": true,
-        "Within 15% of High": true,
-        "RS > 75": true,
-        "VCP (3+ tightenings)": true,
-        "Base Is Tight (<10%)": true,
-        "Volume Dry-Up": false
-      },
-      "ranges": [
-        0.5,
-        0.6,
-        2.1,
-        0.6
-      ]
-    },
-    {
-      "ticker": "AVT",
-      "price": 89.6,
-      "changePct": -3.08,
-      "vcpScore": 88,
-      "rs": 99,
-      "contractions": 4,
-      "volRatio": 1.1,
-      "pivot": 94.9,
-      "distFromHigh": 3.6,
-      "sma50": 83.35,
-      "sma150": 64.94,
-      "sma200": 61.27,
-      "passCount": 7,
-      "checks": {
-        "MA Stack 50>150>200": true,
-        "Not Extended (<12% > 50d)": true,
-        "200d Rising": true,
-        "Within 15% of High": true,
-        "RS > 75": true,
-        "VCP (3+ tightenings)": true,
-        "Base Is Tight (<10%)": true,
-        "Volume Dry-Up": false
-      },
-      "ranges": [
-        4.0,
-        8.9,
-        10.8,
-        5.3
-      ]
-    },
-    {
-      "ticker": "CBT",
-      "price": 87.49,
-      "changePct": -3.54,
-      "vcpScore": 88,
-      "rs": 96,
-      "contractions": 3,
-      "volRatio": 1.4,
-      "pivot": 93.15,
-      "distFromHigh": 4.7,
-      "sma50": 81.38,
-      "sma150": 73.49,
-      "sma200": 72.76,
-      "passCount": 7,
-      "checks": {
-        "MA Stack 50>150>200": true,
-        "Not Extended (<12% > 50d)": true,
-        "200d Rising": true,
-        "Within 15% of High": true,
-        "RS > 75": true,
-        "VCP (3+ tightenings)": true,
-        "Base Is Tight (<10%)": true,
-        "Volume Dry-Up": false
-      },
-      "ranges": [
-        4.8,
-        7.4,
-        8.9,
-        7.2
-      ]
-    },
-    {
-      "ticker": "DCO",
-      "price": 162.26,
-      "changePct": -1.6,
-      "vcpScore": 88,
-      "rs": 99,
-      "contractions": 3,
-      "volRatio": 1.06,
-      "pivot": 168.74,
-      "distFromHigh": 1.8,
-      "sma50": 147.6,
-      "sma150": 123.72,
-      "sma200": 116.24,
-      "passCount": 7,
-      "checks": {
-        "MA Stack 50>150>200": true,
-        "Not Extended (<12% > 50d)": true,
-        "200d Rising": true,
-        "Within 15% of High": true,
-        "RS > 75": true,
-        "VCP (3+ tightenings)": true,
-        "Base Is Tight (<10%)": true,
-        "Volume Dry-Up": false
-      },
-      "ranges": [
-        7.0,
-        11.3,
-        5.1,
-        6.6
-      ]
-    },
-    {
-      "ticker": "EIG",
-      "price": 48.18,
-      "changePct": 3.57,
-      "vcpScore": 88,
-      "rs": 75,
-      "contractions": 3,
-      "volRatio": 1.52,
-      "pivot": 48.32,
-      "distFromHigh": 0.0,
-      "sma50": 43.32,
-      "sma150": 41.94,
-      "sma200": 41.5,
-      "passCount": 7,
-      "checks": {
-        "MA Stack 50>150>200": true,
-        "Not Extended (<12% > 50d)": true,
-        "200d Rising": true,
-        "Within 15% of High": true,
-        "RS > 75": true,
-        "VCP (3+ tightenings)": true,
-        "Base Is Tight (<10%)": true,
-        "Volume Dry-Up": false
-      },
-      "ranges": [
-        2.2,
-        3.2,
-        7.8,
-        3.9
-      ]
+        0.2,
+        0.4,
+        0.2,
+        0.4
+      ],
+      "baseWeeks": 7.8,
+      "baseDepth": 16.2,
+      "ret6m": 32.3
     },
     {
       "ticker": "EZPW",
       "price": 32.38,
       "changePct": 2.76,
       "vcpScore": 88,
-      "rs": 99,
+      "rs": 93,
       "contractions": 3,
       "volRatio": 1.48,
       "pivot": 33.74,
@@ -363,11 +90,11 @@
       "checks": {
         "MA Stack 50>150>200": true,
         "Not Extended (<12% > 50d)": true,
-        "200d Rising": true,
         "Within 15% of High": true,
-        "RS > 75": true,
+        "RS > 80": true,
         "VCP (3+ tightenings)": true,
         "Base Is Tight (<10%)": true,
+        "Valid Base (3wk+, 5-35%)": true,
         "Volume Dry-Up": false
       },
       "ranges": [
@@ -375,534 +102,10 @@
         13.8,
         7.6,
         11.5
-      ]
-    },
-    {
-      "ticker": "FULT",
-      "price": 23.66,
-      "changePct": 2.65,
-      "vcpScore": 88,
-      "rs": 79,
-      "contractions": 3,
-      "volRatio": 1.29,
-      "pivot": 23.67,
-      "distFromHigh": 0.0,
-      "sma50": 21.82,
-      "sma150": 20.54,
-      "sma200": 19.86,
-      "passCount": 7,
-      "checks": {
-        "MA Stack 50>150>200": true,
-        "Not Extended (<12% > 50d)": true,
-        "200d Rising": true,
-        "Within 15% of High": true,
-        "RS > 75": true,
-        "VCP (3+ tightenings)": true,
-        "Base Is Tight (<10%)": true,
-        "Volume Dry-Up": false
-      },
-      "ranges": [
-        5.1,
-        7.1,
-        5.5,
-        2.7
-      ]
-    },
-    {
-      "ticker": "GKOS",
-      "price": 134.65,
-      "changePct": 2.64,
-      "vcpScore": 88,
-      "rs": 80,
-      "contractions": 3,
-      "volRatio": 1.01,
-      "pivot": 135.18,
-      "distFromHigh": 6.5,
-      "sma50": 126.51,
-      "sma150": 116.22,
-      "sma200": 108.21,
-      "passCount": 7,
-      "checks": {
-        "MA Stack 50>150>200": true,
-        "Not Extended (<12% > 50d)": true,
-        "200d Rising": true,
-        "Within 15% of High": true,
-        "RS > 75": true,
-        "VCP (3+ tightenings)": true,
-        "Base Is Tight (<10%)": true,
-        "Volume Dry-Up": false
-      },
-      "ranges": [
-        5.1,
-        7.2,
-        22.3,
-        15.8
-      ]
-    },
-    {
-      "ticker": "HOPE",
-      "price": 13.21,
-      "changePct": 1.93,
-      "vcpScore": 88,
-      "rs": 78,
-      "contractions": 3,
-      "volRatio": 1.11,
-      "pivot": 13.29,
-      "distFromHigh": 0.0,
-      "sma50": 12.46,
-      "sma150": 11.61,
-      "sma200": 11.3,
-      "passCount": 7,
-      "checks": {
-        "MA Stack 50>150>200": true,
-        "Not Extended (<12% > 50d)": true,
-        "200d Rising": true,
-        "Within 15% of High": true,
-        "RS > 75": true,
-        "VCP (3+ tightenings)": true,
-        "Base Is Tight (<10%)": true,
-        "Volume Dry-Up": false
-      },
-      "ranges": [
-        5.3,
-        4.0,
-        4.7,
-        2.4
-      ]
-    },
-    {
-      "ticker": "IEX",
-      "price": 221.17,
-      "changePct": -1.86,
-      "vcpScore": 88,
-      "rs": 83,
-      "contractions": 4,
-      "volRatio": 1.06,
-      "pivot": 228.26,
-      "distFromHigh": 1.9,
-      "sma50": 212.03,
-      "sma150": 196.69,
-      "sma200": 188.4,
-      "passCount": 7,
-      "checks": {
-        "MA Stack 50>150>200": true,
-        "Not Extended (<12% > 50d)": true,
-        "200d Rising": true,
-        "Within 15% of High": true,
-        "RS > 75": true,
-        "VCP (3+ tightenings)": true,
-        "Base Is Tight (<10%)": true,
-        "Volume Dry-Up": false
-      },
-      "ranges": [
-        3.9,
-        4.9,
-        5.8,
-        2.8
-      ]
-    },
-    {
-      "ticker": "IIPR",
-      "price": 60.66,
-      "changePct": 2.28,
-      "vcpScore": 88,
-      "rs": 83,
-      "contractions": 3,
-      "volRatio": 1.49,
-      "pivot": 62.3,
-      "distFromHigh": 1.8,
-      "sma50": 56.43,
-      "sma150": 50.94,
-      "sma200": 50.55,
-      "passCount": 7,
-      "checks": {
-        "MA Stack 50>150>200": true,
-        "Not Extended (<12% > 50d)": true,
-        "200d Rising": true,
-        "Within 15% of High": true,
-        "RS > 75": true,
-        "VCP (3+ tightenings)": true,
-        "Base Is Tight (<10%)": true,
-        "Volume Dry-Up": false
-      },
-      "ranges": [
-        4.6,
-        10.1,
-        3.3,
-        5.9
-      ]
-    },
-    {
-      "ticker": "LSTR",
-      "price": 207.5,
-      "changePct": -0.73,
-      "vcpScore": 88,
-      "rs": 99,
-      "contractions": 3,
-      "volRatio": 0.86,
-      "pivot": 228.46,
-      "distFromHigh": 7.9,
-      "sma50": 192.69,
-      "sma150": 163.14,
-      "sma200": 153.53,
-      "passCount": 7,
-      "checks": {
-        "MA Stack 50>150>200": true,
-        "Not Extended (<12% > 50d)": true,
-        "200d Rising": true,
-        "Within 15% of High": true,
-        "RS > 75": true,
-        "VCP (3+ tightenings)": true,
-        "Base Is Tight (<10%)": true,
-        "Volume Dry-Up": false
-      },
-      "ranges": [
-        9.5,
-        5.9,
-        9.0,
-        6.7
-      ]
-    },
-    {
-      "ticker": "MCY",
-      "price": 106.48,
-      "changePct": 3.23,
-      "vcpScore": 88,
-      "rs": 75,
-      "contractions": 3,
-      "volRatio": 1.2,
-      "pivot": 107.02,
-      "distFromHigh": 0.0,
-      "sma50": 98.52,
-      "sma150": 92.66,
-      "sma200": 89.53,
-      "passCount": 7,
-      "checks": {
-        "MA Stack 50>150>200": true,
-        "Not Extended (<12% > 50d)": true,
-        "200d Rising": true,
-        "Within 15% of High": true,
-        "RS > 75": true,
-        "VCP (3+ tightenings)": true,
-        "Base Is Tight (<10%)": true,
-        "Volume Dry-Up": false
-      },
-      "ranges": [
-        4.3,
-        4.5,
-        5.3,
-        7.1
-      ]
-    },
-    {
-      "ticker": "MLI",
-      "price": 136.33,
-      "changePct": -2.28,
-      "vcpScore": 88,
-      "rs": 80,
-      "contractions": 3,
-      "volRatio": 1.04,
-      "pivot": 141.9,
-      "distFromHigh": 2.9,
-      "sma50": 133.31,
-      "sma150": 122.06,
-      "sma200": 116.77,
-      "passCount": 7,
-      "checks": {
-        "MA Stack 50>150>200": true,
-        "Not Extended (<12% > 50d)": true,
-        "200d Rising": true,
-        "Within 15% of High": true,
-        "RS > 75": true,
-        "VCP (3+ tightenings)": true,
-        "Base Is Tight (<10%)": true,
-        "Volume Dry-Up": false
-      },
-      "ranges": [
-        4.0,
-        4.7,
-        7.4,
-        10.5
-      ]
-    },
-    {
-      "ticker": "NGVT",
-      "price": 72.66,
-      "changePct": -0.11,
-      "vcpScore": 88,
-      "rs": 76,
-      "contractions": 3,
-      "volRatio": 1.17,
-      "pivot": 74.66,
-      "distFromHigh": 6.7,
-      "sma50": 71.6,
-      "sma150": 66.77,
-      "sma200": 63.8,
-      "passCount": 7,
-      "checks": {
-        "MA Stack 50>150>200": true,
-        "Not Extended (<12% > 50d)": true,
-        "200d Rising": true,
-        "Within 15% of High": true,
-        "RS > 75": true,
-        "VCP (3+ tightenings)": true,
-        "Base Is Tight (<10%)": true,
-        "Volume Dry-Up": false
-      },
-      "ranges": [
-        3.8,
-        11.1,
-        4.4,
-        4.1
-      ]
-    },
-    {
-      "ticker": "OFG",
-      "price": 48.03,
-      "changePct": 1.78,
-      "vcpScore": 88,
-      "rs": 75,
-      "contractions": 3,
-      "volRatio": 1.39,
-      "pivot": 48.57,
-      "distFromHigh": 0.1,
-      "sma50": 45.4,
-      "sma150": 42.08,
-      "sma200": 41.96,
-      "passCount": 7,
-      "checks": {
-        "MA Stack 50>150>200": true,
-        "Not Extended (<12% > 50d)": true,
-        "200d Rising": true,
-        "Within 15% of High": true,
-        "RS > 75": true,
-        "VCP (3+ tightenings)": true,
-        "Base Is Tight (<10%)": true,
-        "Volume Dry-Up": false
-      },
-      "ranges": [
-        4.8,
-        3.8,
-        4.7,
-        3.1
-      ]
-    },
-    {
-      "ticker": "SPXC",
-      "price": 236.07,
-      "changePct": -4.2,
-      "vcpScore": 88,
-      "rs": 75,
-      "contractions": 3,
-      "volRatio": 1.2,
-      "pivot": 247.73,
-      "distFromHigh": 4.2,
-      "sma50": 218.61,
-      "sma150": 214.53,
-      "sma200": 209.47,
-      "passCount": 7,
-      "checks": {
-        "MA Stack 50>150>200": true,
-        "Not Extended (<12% > 50d)": true,
-        "200d Rising": true,
-        "Within 15% of High": true,
-        "RS > 75": true,
-        "VCP (3+ tightenings)": true,
-        "Base Is Tight (<10%)": true,
-        "Volume Dry-Up": false
-      },
-      "ranges": [
-        4.2,
-        9.5,
-        12.9,
-        5.7
-      ]
-    },
-    {
-      "ticker": "BANR",
-      "price": 66.96,
-      "changePct": 2.17,
-      "vcpScore": 75,
-      "rs": 59,
-      "contractions": 3,
-      "volRatio": 0.92,
-      "pivot": 67.57,
-      "distFromHigh": 0.4,
-      "sma50": 64.88,
-      "sma150": 62.95,
-      "sma200": 62.76,
-      "passCount": 6,
-      "checks": {
-        "MA Stack 50>150>200": true,
-        "Not Extended (<12% > 50d)": true,
-        "200d Rising": true,
-        "Within 15% of High": true,
-        "RS > 75": false,
-        "VCP (3+ tightenings)": true,
-        "Base Is Tight (<10%)": true,
-        "Volume Dry-Up": false
-      },
-      "ranges": [
-        5.3,
-        4.1,
-        4.7,
-        1.9
-      ]
-    },
-    {
-      "ticker": "EBC",
-      "price": 20.98,
-      "changePct": 1.16,
-      "vcpScore": 75,
-      "rs": 68,
-      "contractions": 3,
-      "volRatio": 2.77,
-      "pivot": 21.04,
-      "distFromHigh": 3.1,
-      "sma50": 20.02,
-      "sma150": 19.55,
-      "sma200": 19.03,
-      "passCount": 6,
-      "checks": {
-        "MA Stack 50>150>200": true,
-        "Not Extended (<12% > 50d)": true,
-        "200d Rising": true,
-        "Within 15% of High": true,
-        "RS > 75": false,
-        "VCP (3+ tightenings)": true,
-        "Base Is Tight (<10%)": true,
-        "Volume Dry-Up": false
-      },
-      "ranges": [
-        4.6,
-        3.7,
-        4.7,
-        3.5
-      ]
-    },
-    {
-      "ticker": "GNW",
-      "price": 9.17,
-      "changePct": 2.57,
-      "vcpScore": 75,
-      "rs": 57,
-      "contractions": 3,
-      "volRatio": 1.17,
-      "pivot": 9.18,
-      "distFromHigh": 1.5,
-      "sma50": 8.88,
-      "sma150": 8.69,
-      "sma200": 8.69,
-      "passCount": 6,
-      "checks": {
-        "MA Stack 50>150>200": true,
-        "Not Extended (<12% > 50d)": true,
-        "200d Rising": true,
-        "Within 15% of High": true,
-        "RS > 75": false,
-        "VCP (3+ tightenings)": true,
-        "Base Is Tight (<10%)": true,
-        "Volume Dry-Up": false
-      },
-      "ranges": [
-        2.5,
-        4.9,
-        4.8,
-        6.7
-      ]
-    },
-    {
-      "ticker": "IOSP",
-      "price": 81.84,
-      "changePct": -0.76,
-      "vcpScore": 75,
-      "rs": 68,
-      "contractions": 3,
-      "volRatio": 0.93,
-      "pivot": 87.82,
-      "distFromHigh": 6.4,
-      "sma50": 79.05,
-      "sma150": 77.02,
-      "sma200": 76.63,
-      "passCount": 6,
-      "checks": {
-        "MA Stack 50>150>200": true,
-        "Not Extended (<12% > 50d)": true,
-        "200d Rising": true,
-        "Within 15% of High": true,
-        "RS > 75": false,
-        "VCP (3+ tightenings)": true,
-        "Base Is Tight (<10%)": true,
-        "Volume Dry-Up": false
-      },
-      "ranges": [
-        6.3,
-        7.5,
-        3.3,
-        4.1
-      ]
-    },
-    {
-      "ticker": "PFBC",
-      "price": 101.78,
-      "changePct": 2.05,
-      "vcpScore": 75,
-      "rs": 61,
-      "contractions": 4,
-      "volRatio": 1.19,
-      "pivot": 102.4,
-      "distFromHigh": 0.0,
-      "sma50": 95.63,
-      "sma150": 92.83,
-      "sma200": 91.99,
-      "passCount": 6,
-      "checks": {
-        "MA Stack 50>150>200": true,
-        "Not Extended (<12% > 50d)": true,
-        "200d Rising": true,
-        "Within 15% of High": true,
-        "RS > 75": false,
-        "VCP (3+ tightenings)": true,
-        "Base Is Tight (<10%)": true,
-        "Volume Dry-Up": false
-      },
-      "ranges": [
-        4.4,
-        5.3,
-        6.0,
-        3.2
-      ]
-    },
-    {
-      "ticker": "WTBA",
-      "price": 25.63,
-      "changePct": 2.07,
-      "vcpScore": 75,
-      "rs": 68,
-      "contractions": 3,
-      "volRatio": 1.6,
-      "pivot": 25.86,
-      "distFromHigh": 0.6,
-      "sma50": 24.01,
-      "sma150": 23.42,
-      "sma200": 22.56,
-      "passCount": 6,
-      "checks": {
-        "MA Stack 50>150>200": true,
-        "Not Extended (<12% > 50d)": true,
-        "200d Rising": true,
-        "Within 15% of High": true,
-        "RS > 75": false,
-        "VCP (3+ tightenings)": true,
-        "Base Is Tight (<10%)": true,
-        "Volume Dry-Up": false
-      },
-      "ranges": [
-        4.4,
-        7.3,
-        4.5,
-        2.2
-      ]
+      ],
+      "baseWeeks": 6.2,
+      "baseDepth": 25.0,
+      "ret6m": 68.5
     }
   ]
 }
