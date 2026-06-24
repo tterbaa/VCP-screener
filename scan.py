@@ -206,21 +206,35 @@ def analyze(ticker: str, df: pd.DataFrame, true_rs: int | None = None) -> dict |
         "Valid Base (3wk+, 5-35%)": bool(base_ok),
         "Volume Dry-Up": bool(vol_ratio < 0.80),
     }
-    pass_count = sum(checks.values())
-    vcp_score = round(pass_count / len(checks) * 100)
 
-    # Strict core gate — ALL of these must hold, no exceptions:
-    core = (
+    # ── Weighted score ────────────────────────────────────────────────────────
+    # Each criterion contributes its weight to the score. The structural
+    # essentials (uptrend, near highs, RS, contraction) carry more weight than
+    # the finer-grain checks, so a stock missing one minor criterion can still
+    # score well and surface — rather than being silently dropped.
+    weights = {
+        "MA Stack 50>150>200": 18,
+        "Within 15% of High": 16,
+        "RS > 80": 16,
+        "VCP (3+ tightenings)": 16,
+        "Valid Base (3wk+, 5-35%)": 12,
+        "Base Is Tight (<10%)": 10,
+        "Volume Dry-Up": 8,
+        "Not Extended (<12% > 50d)": 4,
+    }
+    vcp_score = sum(w for k, w in weights.items() if checks[k])
+    pass_count = sum(checks.values())
+
+    # ── Minimal hard gate ─────────────────────────────────────────────────────
+    # Only the things that define a valid candidate at all. Everything else is
+    # handled by the weighted score. A stock must be in a Stage 2 uptrend and
+    # genuinely near its highs — these are non-negotiable. The rest is scored.
+    essential = (
         ma_stacked                          # established Stage 2 uptrend
         and price > sma50                   # holding above the 50d
-        and not_extended                    # not already broken out / spiked
         and checks["Within 15% of High"]    # genuinely near highs (kills recoveries)
-        and contractions >= 3               # real multi-stage contraction
-        and latest_wk_range < 0.10          # base is actually tight now
-        and base_ok                         # base has real length & controlled depth
-        and rs >= 80                        # true market-relative strength
     )
-    if not core or vcp_score < 75:
+    if not essential or vcp_score < 70:
         return None
 
     change_pct = (close[-1] / close[-2] - 1) * 100 if n >= 2 else 0
