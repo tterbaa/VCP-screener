@@ -240,7 +240,7 @@ function rangeBars(ranges){
   // reverse so oldest→newest reads left→right
   const ordered = [...ranges].reverse();
   return `<div class="ranges-viz">
-    <div class="l">Volatility contraction (10-day range %, old → new)</div>
+    <div class="l">Volatility contraction (weekly range %, old → new)</div>
     <div class="bars">
       ${ordered.map(v=>{
         if(v==null) return `<div class="bar-wrap"><div class="bar" style="height:0"></div><div class="bar-lbl">—</div></div>`;
@@ -266,7 +266,7 @@ function row(r, i){
         <div class="id-ticker">${r.ticker}</div>
         <div class="id-sub">
           <span class="rs-tag">RS ${r.rs}</span>
-          <span>${r.contractions} bases</span>
+          <span>${r.contractions} tightenings</span>
           <span>-${r.distFromHigh}% hi</span>
         </div>
       </div>
@@ -284,6 +284,9 @@ function row(r, i){
         </div>
         <div class="metric-grid">
           <div class="mcell"><div class="l">Vol Ratio</div><div class="v ${r.volRatio<0.75?'good':'warn'}">${Math.round(r.volRatio*100)}%</div></div>
+          <div class="mcell"><div class="l">Base Length</div><div class="v">${r.baseWeeks??'—'}w</div></div>
+          <div class="mcell"><div class="l">Base Depth</div><div class="v ${r.baseDepth<25?'good':'warn'}">${r.baseDepth??'—'}%</div></div>
+          <div class="mcell"><div class="l">6m Return</div><div class="v ${r.ret6m>0?'good':''}">${r.ret6m>0?'+':''}${r.ret6m??'—'}%</div></div>
           <div class="mcell"><div class="l">50d MA</div><div class="v">$${r.sma50??'—'}</div></div>
           <div class="mcell"><div class="l">200d MA</div><div class="v">$${r.sma200}</div></div>
         </div>
